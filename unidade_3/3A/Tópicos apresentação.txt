@@ -1,0 +1,19 @@
+https://developer.android.com/studio
+https://flutter.dev/docs/get-started/install/windows
+
+https://developer.android.com/docs
+https://flutter.dev/docs
+
+Instalar o Android Studio:
+
+Descompactar o Flutter:
+C:\src\flutter
+
+Variável de usuário path, adicionar:
+C:\src\flutter\bin
+
+Plugin Android Studio:
+
+Projeto Hellow World
+
+project_3a
