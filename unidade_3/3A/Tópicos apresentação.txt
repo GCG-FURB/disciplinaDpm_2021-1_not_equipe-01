@@ -17,3 +17,5 @@ Plugin Android Studio:
 Projeto Hellow World
 
 project_3a
+
+Depuração
