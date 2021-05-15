@@ -25,6 +25,8 @@ class _MapPageState extends State<MapPage> {
           target: LatLng(lat, long),
           zoom: 11.0,
         ),
+        myLocationEnabled: true,
+        mapToolbarEnabled: true,
       ),
     );
   }
