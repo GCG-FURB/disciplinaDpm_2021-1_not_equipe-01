@@ -9,10 +9,6 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  GoogleMapController mapController;
-
-  double lat = -26.8815391;
-  double long = -49.1183759;
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +18,11 @@ class _MapPageState extends State<MapPage> {
       ),
       body: GoogleMap(
         initialCameraPosition: CameraPosition(
-          target: LatLng(lat, long),
+          target: LatLng(-26.8815391, -49.1183759),
           zoom: 11.0,
         ),
         myLocationEnabled: true,
-        mapToolbarEnabled: true,
+        mapType: MapType.normal,
       ),
     );
   }
