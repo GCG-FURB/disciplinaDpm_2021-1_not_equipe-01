@@ -5,6 +5,7 @@ https://developer.android.com/docs
 https://flutter.dev/docs
 
 Instalar o Android Studio:
+Next, Next, Next.
 
 Descompactar o Flutter:
 C:\src\flutter
