@@ -12,11 +12,15 @@ class Users with ChangeNotifier {
 
   final Map<String, User> _items = {...DUMMY_USERS};
 
-  List<User> get allFirebase {
+  Future<List<User>> get allFirebase async {
     print('users.dat > allFirebase ');
 
     return [..._items.values];
   } //all
+
+  Map<String,User> convert(){
+
+  }
 
   List<User> get all {
     print('users.dat > get all ');
