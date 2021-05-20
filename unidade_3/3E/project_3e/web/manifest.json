@@ -2,7 +2,7 @@
     "name": "project_3e",
     "short_name": "project_3e",
     "start_url": ".",
-    "display": "standalone",
+    "display": "minimal-ui",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
     "description": "A new Flutter project.",
