@@ -78,11 +78,11 @@ class NoteListScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'ANDROIDRIDE\'S',
+              'NOTA\'S',
               style: headerRideStyle,
             ),
             Text(
-              'Notes',
+              'Notas',
               style: headerNotesStyle,
             )
           ],

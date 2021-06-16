@@ -116,7 +116,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 textCapitalization: TextCapitalization.sentences,
                 style: createTitle,
                 decoration: InputDecoration(
-                    hintText: 'Enter Note Title', border: InputBorder.none),
+                    hintText: 'Escreva o título da nota', border: InputBorder.none),
               ),
             ),
             if (_image != null)
@@ -171,7 +171,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 maxLines: null,
                 style: createContent,
                 decoration: InputDecoration(
-                  hintText: 'Enter Something...',
+                  hintText: 'Escreva algo...',
                   border: InputBorder.none,
                 ),
               ),
@@ -182,7 +182,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (titleController.text.isEmpty)
-            titleController.text = 'Untitled Note';
+            titleController.text = 'Nota sem título';
 
           saveNote();
         },
