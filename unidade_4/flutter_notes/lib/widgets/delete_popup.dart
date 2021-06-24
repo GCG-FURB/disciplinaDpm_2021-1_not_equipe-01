@@ -14,19 +14,19 @@ class DeletePopUp extends StatelessWidget {
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(5),
       ),
-      title: Text('Delete?'),
-      content: Text('Do you want to delete the note?'),
+      title: Text('Deletar?'),
+      content: Text('Você deseja realmente deletar a nota?'),
       actions: [
         TextButton(
-          child: Text('Yes'),
-          onPressed: () async {
-            await Provider.of<NoteProvider>(context, listen: false)
+          child: Text('Sim'),
+          onPressed: () {
+            Provider.of<NoteProvider>(context, listen: false)
                 .deleteNote(selectedNote.id);
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },
         ),
         TextButton(
-          child: Text('No'),
+          child: Text('Não'),
           onPressed: () {
             Navigator.pop(context);
           },

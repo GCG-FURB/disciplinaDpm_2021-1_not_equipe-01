@@ -72,11 +72,11 @@ class NoteListScreen extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'ANDROIDRIDE\'S',
+              'NOTA\'S',
               style: headerRideStyle,
             ),
             Text(
-              'Notes',
+              'Notas',
               style: headerNotesStyle,
             )
           ],
@@ -111,7 +111,7 @@ class NoteListScreen extends StatelessWidget {
             ),
             RichText(
               text: TextSpan(style: noNotesStyle, children: [
-                TextSpan(text: ' There is no note available\n Tap on "'),
+                TextSpan(text: ' Não há notas disponíveis\n Toque em "'),
                 TextSpan(
                     text: '+',
                     style: boldPlus,
@@ -119,7 +119,7 @@ class NoteListScreen extends StatelessWidget {
                       ..onTap = () {
                         goToNoteEditScreen(context);
                       }),
-                TextSpan(text: '" to add new note')
+                TextSpan(text: '" para adicionar uma nota')
               ]),
             ),
           ],

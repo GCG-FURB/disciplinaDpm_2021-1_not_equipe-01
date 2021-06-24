@@ -9,6 +9,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:geocoder/geocoder.dart';
 
 import 'note_view_screen.dart';
 
@@ -28,6 +30,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
   final contentController = TextEditingController();
 
   File _image;
+
+  // String _currentAddress;
 
   final picker = ImagePicker();
 
@@ -105,7 +109,8 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 textCapitalization: TextCapitalization.sentences,
                 style: createTitle,
                 decoration: InputDecoration(
-                    hintText: 'Enter Note Title', border: InputBorder.none),
+                    hintText: 'Escreva o título da nota',
+                    border: InputBorder.none),
               ),
             ),
             if (_image != null)
@@ -160,7 +165,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
                 maxLines: null,
                 style: createContent,
                 decoration: InputDecoration(
-                  hintText: 'Enter Something...',
+                  hintText: 'Escreva algo...',
                   border: InputBorder.none,
                 ),
               ),
@@ -171,7 +176,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           if (titleController.text.isEmpty)
-            titleController.text = 'Untitled Note';
+            titleController.text = 'Nota sem título';
 
           saveNote();
         },
@@ -215,6 +220,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
       );
     } else {
       // int id = DateTime.now().millisecondsSinceEpoch;
+      content += "\n\n" + (await getUserLocation());
 
       await Provider.of<NoteProvider>(this.context, listen: false)
           .addOrUpdateNote(
@@ -232,5 +238,14 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
         builder: (context) {
           return DeletePopUp(widget.selectedNote);
         });
+  }
+
+  Future<String> getUserLocation() async {
+    Position position = await Geolocator.getCurrentPosition();
+    final coordinates = new Coordinates(position.latitude, position.longitude);
+    var addresses =
+        await Geocoder.local.findAddressesFromCoordinates(coordinates);
+    var first = addresses.first;
+    return first.addressLine;
   }
 }
