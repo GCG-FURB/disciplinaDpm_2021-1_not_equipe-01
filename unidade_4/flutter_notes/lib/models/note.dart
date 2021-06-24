@@ -57,10 +57,10 @@ class Note extends ChangeNotifier {
   factory Note.fromDocument(DocumentSnapshot doc, String id) {
     return Note(
         id: id,
-        title: doc.data()['title'].toString(),
-        content: doc.data()['content'].toString(),
-        imagePath: doc.data()['imagePath'].toString(),
-        date: doc.data()['date'].toString());
+        title: doc['title'].toString(),
+        content: doc['content'].toString(),
+        imagePath: doc['imagePath'].toString(),
+        date: doc['date'].toString());
   }
 
   Future<void> deleteItem(id) async {
