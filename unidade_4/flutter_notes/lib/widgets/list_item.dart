@@ -1,17 +1,15 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_notes/models/note.dart';
 import 'package:flutter_notes/screens/note_view_screen.dart';
 import 'package:flutter_notes/utils/constants.dart';
 
 class ListItem extends StatelessWidget {
-  final int id;
-  final String title;
-  final String content;
-  final String imagePath;
-  final String date;
 
-  ListItem(this.id, this.title, this.content, this.imagePath, this.date);
+  final Note note;
+
+  ListItem(this.note);
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +19,7 @@ class ListItem extends StatelessWidget {
       margin: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       child: InkWell(
         onTap: () {
-          Navigator.pushNamed(context, NoteViewScreen.route, arguments: id);
+          Navigator.pushNamed(context, NoteViewScreen.route, arguments: note);
         },
         child: Container(
           width: double.infinity,
@@ -46,7 +44,7 @@ class ListItem extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        title,
+                        note.title,
                         overflow: TextOverflow.ellipsis,
                         maxLines: 2,
                         style: itemTitle,
@@ -55,7 +53,7 @@ class ListItem extends StatelessWidget {
                         height: 4.0,
                       ),
                       Text(
-                        date,
+                        note.date,
                         overflow: TextOverflow.ellipsis,
                         style: itemDateStyle,
                       ),
@@ -64,7 +62,7 @@ class ListItem extends StatelessWidget {
                       ),
                       Expanded(
                         child: Text(
-                          content,
+                          note.content,
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: itemContentStyle,
@@ -74,7 +72,7 @@ class ListItem extends StatelessWidget {
                   ),
                 ),
               ),
-              if (imagePath != null)
+              if (note.imagePath != null)
                 Row(
                   children: [
                     SizedBox(
@@ -87,7 +85,7 @@ class ListItem extends StatelessWidget {
                         borderRadius: BorderRadius.circular(12.0),
                         image: DecorationImage(
                           image: FileImage(
-                            File(imagePath),
+                            File(note.imagePath),
                           ),
                           fit: BoxFit.cover,
                         ),

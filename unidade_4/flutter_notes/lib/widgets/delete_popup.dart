@@ -19,8 +19,8 @@ class DeletePopUp extends StatelessWidget {
       actions: [
         TextButton(
           child: Text('Yes'),
-          onPressed: () {
-            Provider.of<NoteProvider>(context, listen: false)
+          onPressed: () async {
+            await Provider.of<NoteProvider>(context, listen: false)
                 .deleteNote(selectedNote.id);
             Navigator.popUntil(context, ModalRoute.withName('/'));
           },

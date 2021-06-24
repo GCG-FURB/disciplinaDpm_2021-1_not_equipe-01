@@ -15,6 +15,10 @@ import 'note_view_screen.dart';
 class NoteEditScreen extends StatefulWidget {
   static const route = '/edit-note';
 
+  NoteEditScreen({this.selectedNote});
+
+  final Note selectedNote;
+
   @override
   _NoteEditScreenState createState() => _NoteEditScreenState();
 }
@@ -27,33 +31,18 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
 
   final picker = ImagePicker();
 
-  bool firstTime = true;
-  Note selectedNote;
-  int id;
-
   @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
+  void initState() {
+    super.initState();
 
-    if (firstTime) {
-      id = ModalRoute.of(this.context).settings.arguments;
+    if (widget.selectedNote != null) {
+      titleController.text = widget.selectedNote.title;
+      contentController.text = widget.selectedNote.content;
 
-      if (id != null) {
-        selectedNote = Provider.of<NoteProvider>(
-          this.context,
-          listen: false,
-        ).getNote(id);
-
-        titleController.text = selectedNote?.title;
-        contentController.text = selectedNote?.content;
-
-        if (selectedNote?.imagePath != null) {
-          _image = File(selectedNote.imagePath);
-        }
+      if (widget.selectedNote.imagePath != null) {
+        _image = File(widget.selectedNote.imagePath);
       }
     }
-    firstTime = false;
   }
 
   @override
@@ -95,7 +84,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
             icon: Icon(Icons.delete),
             color: black,
             onPressed: () {
-              if (id != null) {
+              if (widget.selectedNote?.id != null) {
                 _showDialog();
               } else {
                 Navigator.pop(context);
@@ -208,26 +197,32 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     });
   }
 
-  void saveNote() {
+  void saveNote() async {
     String title = titleController.text.trim();
     String content = contentController.text.trim();
 
     String imagePath = _image != null ? _image.path : null;
 
-    if (id != null) {
+    if (widget.selectedNote?.id != null) {
       Provider.of<NoteProvider>(
         this.context,
         listen: false,
-      ).addOrUpdateNote(id, title, content, imagePath, EditMode.UPDATE);
-      Navigator.of(this.context).pop();
+      ).addOrUpdateNote(
+          widget.selectedNote?.id, title, content, imagePath, EditMode.UPDATE);
+      //Navigator.of(this.context).pop();
+      Navigator.of(this.context).pushReplacementNamed(
+        '/',
+      );
     } else {
-      int id = DateTime.now().millisecondsSinceEpoch;
+      // int id = DateTime.now().millisecondsSinceEpoch;
 
-      Provider.of<NoteProvider>(this.context, listen: false)
-          .addOrUpdateNote(id, title, content, imagePath, EditMode.ADD);
+      await Provider.of<NoteProvider>(this.context, listen: false)
+          .addOrUpdateNote(
+              widget.selectedNote?.id, title, content, imagePath, EditMode.ADD);
 
-      Navigator.of(this.context)
-          .pushReplacementNamed(NoteViewScreen.route, arguments: id);
+      Navigator.of(this.context).pushReplacementNamed(
+        '/',
+      );
     }
   }
 
@@ -235,7 +230,7 @@ class _NoteEditScreenState extends State<NoteEditScreen> {
     showDialog(
         context: this.context,
         builder: (context) {
-          return DeletePopUp(selectedNote);
+          return DeletePopUp(widget.selectedNote);
         });
   }
 }

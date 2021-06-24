@@ -1,53 +1,55 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_notes/helper/database_helper.dart';
 import 'package:flutter_notes/models/note.dart';
 import 'package:flutter_notes/utils/constants.dart';
 
 class NoteProvider with ChangeNotifier {
-  List _items = [];
+  Note note;
+  var _items = <Note>[];
 
-  List get items {
-    return [..._items];
+  List<Note> get items => _items;
+
+  Future<Note> getNote(String id) async {
+/*    print("entrei em getNote");
+    final item  = note.firestore.doc(id as String);
+    print("getNote");
+    print(item);
+    return _items.firstWhere((note) => note.id == id, orElse: () => null);*/
+    final snapshot = await FirebaseFirestore.instance
+        .collection('notes')
+        .doc(id.toString())
+        .get();
+    return Note.fromDocument(snapshot, id.toString());
+    //return Note.fromMap(snapshot.data());
   }
 
-  Note getNote(int id) {
-    return _items.firstWhere((note) => note.id == id, orElse: () => null);
+  Future<void> deleteNote(String id) async {
+    print("deleteNote");
+    //note.deleteItem(id);
+    DocumentReference documentReferencer =
+        FirebaseFirestore.instance.collection('notes').doc(id);
+
+    await documentReferencer.delete().whenComplete(() {
+      print('Note item deleted from the database');
+      getNotes();
+    }).catchError((e) => print(e));
   }
 
-  Future deleteNote(int id) {
-    _items.removeWhere((element) => element.id == id);
+  Future addOrUpdateNote(String id, String title, String content,
+      String imagePath, EditMode editMode) async {
+    note = Note(id: id, title: title, content: content, imagePath: imagePath, date: DateTime.now().toString());
+    await note.save();
     notifyListeners();
-    return DatabaseHelper.delete(id);
+    getNotes();
   }
 
-  Future addOrUpdateNote(int id, String title, String content, String imagePath,
-      EditMode editMode) async {
-    final note = Note(id, title, content, imagePath);
+  Future<void> getNotes() async {
+    final snapshot = await FirebaseFirestore.instance.collection('notes').get();
 
-    if (EditMode.ADD == editMode) {
-      _items.insert(0, note);
-    } else {
-      _items[_items.indexWhere((note) => note.id == id)] = note;
-    }
-
-    notifyListeners();
-
-    DatabaseHelper.insert({
-      'id': note.id,
-      'title': note.title,
-      'content': note.content,
-      'imagePath': note.imagePath,
-    });
-  }
-
-  Future getNotes() async {
-    final notesList = await DatabaseHelper.getNotesFromDB();
-
-    _items = notesList
-        .map(
-          (item) => Note(
-              item['id'], item['title'], item['content'], item['imagePath']),
-        )
+    _items = List<Note>.from(
+            snapshot.docs.map((notes) => Note.fromMap(notes.data(), notes.id)))
         .toList();
 
     notifyListeners();

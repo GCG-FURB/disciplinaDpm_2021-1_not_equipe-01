@@ -24,26 +24,20 @@ class NoteListScreen extends StatelessWidget {
             return Scaffold(
               body: Consumer<NoteProvider>(
                 child: noNotesUI(context),
-                builder: (context, noteprovider, child) =>
-                    noteprovider.items.length <= 0
+                builder: (context, noteProvider, child) =>
+                    noteProvider.items.length <= 0
                         ? child
                         : ListView.builder(
                             physics: BouncingScrollPhysics(),
-                            itemCount: noteprovider.items.length + 1,
+                            itemCount: noteProvider.items.length + 1,
                             itemBuilder: (context, index) {
                               if (index == 0) {
                                 return header();
                               } else {
                                 final i = index - 1;
-                                final item = noteprovider.items[i];
+                                final item = noteProvider.items[i];
 
-                                return ListItem(
-                                  item.id,
-                                  item.title,
-                                  item.content,
-                                  item.imagePath,
-                                  item.date,
-                                );
+                                return ListItem(item);
                               }
                             },
                           ),

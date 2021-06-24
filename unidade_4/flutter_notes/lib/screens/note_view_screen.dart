@@ -1,37 +1,27 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_notes/helper/note_provider.dart';
 import 'package:flutter_notes/models/note.dart';
 import 'package:flutter_notes/utils/constants.dart';
 import 'package:flutter_notes/widgets/delete_popup.dart';
-import 'package:provider/provider.dart';
+
 
 import 'note_edit_screen.dart';
 
+
 class NoteViewScreen extends StatefulWidget {
   static const route = '/note-view';
+
+  NoteViewScreen({this.selectedNote});
+
+  final Note selectedNote;
 
   @override
   _NoteViewScreenState createState() => _NoteViewScreenState();
 }
 
 class _NoteViewScreenState extends State<NoteViewScreen> {
-  Note selectedNote;
 
-  @override
-  void didChangeDependencies() {
-    // TODO: implement didChangeDependencies
-    super.didChangeDependencies();
-
-    final id = ModalRoute.of(context).settings.arguments;
-
-    final provider = Provider.of<NoteProvider>(context);
-
-    if (provider.getNote(id) != null) {
-      selectedNote = provider.getNote(id);
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +56,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
-                selectedNote?.title,
+                widget.selectedNote?.title,
                 style: viewTitleStyle,
               ),
             ),
@@ -79,20 +69,20 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
                     size: 18,
                   ),
                 ),
-                Text('${selectedNote?.date}')
+                Text('${widget.selectedNote?.date}')
               ],
             ),
-            if (selectedNote.imagePath != null)
+            if (widget.selectedNote?.imagePath != null)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: Image.file(
-                  File(selectedNote.imagePath),
+                  File(widget.selectedNote?.imagePath),
                 ),
               ),
             Padding(
               padding: const EdgeInsets.all(16.0),
               child: Text(
-                selectedNote.content,
+                widget.selectedNote?.content,
                 style: viewContentStyle,
               ),
             ),
@@ -102,7 +92,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(context, NoteEditScreen.route,
-              arguments: selectedNote.id);
+              arguments: widget.selectedNote);
         },
         child: Icon(Icons.edit),
       ),
@@ -113,7 +103,7 @@ class _NoteViewScreenState extends State<NoteViewScreen> {
     showDialog(
         context: this.context,
         builder: (context) {
-          return DeletePopUp(selectedNote);
+          return DeletePopUp(widget.selectedNote);
         });
   }
 }
